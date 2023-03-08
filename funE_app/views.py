@@ -6,12 +6,26 @@ from .models import User
 from .serializer import UserSerializer 
 from rest_framework import generics,permissions
 from .serializer import SignupSerializer
+from rest_framework.filters import SearchFilter, OrderingFilter
+from rest_framework.viewsets import ModelViewSet
 # Create your views here.
 
-class UserList(generics.ListCreateAPIView):
+
+class UserViewSet(ModelViewSet):
     queryset = User.objects.all()
     serializer_class = UserSerializer
     permission_classes = [permissions.IsAuthenticated]
+    filter_backends = [SearchFilter, OrderingFilter]
+    search_fields = ['username', 'email', 'first_name', 'last_name']
+    
+
+# class UserList(generics.ListCreateAPIView):
+#     queryset = User.objects.all()
+#     serializer_class = UserSerializer
+#     permission_classes = [permissions.IsAuthenticated]
+#     filter_backends = [SearchFilter, OrderingFilter]
+#     search_fields = ['username', 'email', 'first_name', 'last_name']
+
 
 class SignupView(generics.CreateAPIView):
     queryset = User.objects.all()
